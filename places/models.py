@@ -33,6 +33,7 @@ class Image(models.Model):
     )
     place = models.ForeignKey(
         'Place',
+        verbose_name='Место',
         related_name="images",
         on_delete=models.CASCADE,
     )
