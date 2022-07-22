@@ -1,26 +1,13 @@
 from django.contrib import admin
-from django.forms import BaseInlineFormSet
 from django.utils.html import format_html
-
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin, SortableAdminBase
 from .models import Place, Image
 
 
-class LimitModelFormset(BaseInlineFormSet):
-    """ Base Inline formset to limit inline Model query results. """
-
-    def __init__(self, *args, **kwargs):
-        super(LimitModelFormset, self).__init__(*args, **kwargs)
-        _kwargs = {self.fk.name: kwargs['instance']}
-        self.queryset = kwargs['queryset'].filter(**_kwargs).order_by(
-            '-order')[
-                        :5]
-
-
-class ImageInline(admin.TabularInline):
-    # formset = LimitModelFormset
+class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
     model = Image
+    extra = 0
     readonly_fields = ["get_preview"]
-    fields = ('image', 'get_preview', 'order')
 
     def get_preview(self, image):
         return format_html(
@@ -29,13 +16,13 @@ class ImageInline(admin.TabularInline):
 
 
 @admin.register(Image)
-class ImageAdmin(admin.ModelAdmin):
+class ImageAdmin(SortableAdminMixin, admin.ModelAdmin):
     raw_id_fields = ("place",)
     list_filter = ("place",)
 
 
 @admin.register(Place)
-class PlaceAdmin(admin.ModelAdmin):
+class PlaceAdmin(SortableAdminBase, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
