@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.forms import BaseInlineFormSet
+from django.utils.html import format_html
+
 from .models import Place, Image
 
 
@@ -17,6 +19,13 @@ class LimitModelFormset(BaseInlineFormSet):
 class ImageInline(admin.TabularInline):
     # formset = LimitModelFormset
     model = Image
+    readonly_fields = ["get_preview"]
+    fields = ('image', 'get_preview', 'order')
+
+    def get_preview(self, image):
+        return format_html(
+            f"<img src={image.image.url} style='max-height: 200px;'>",
+        )
 
 
 @admin.register(Image)
