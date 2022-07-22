@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.db import models
+from tinymce.models import HTMLField
 
 
 def get_upload_path(instance, filename):
@@ -13,11 +14,11 @@ class Place(models.Model):
                              max_length=200,
                              unique=True)
     description_short = models.CharField(verbose_name='Короткое описание',
-                                         max_length=200,
+                                         max_length=300,
                                          blank=True)
-    description_long = models.TextField(verbose_name='Длинное описание',
-                                        blank=True,
-                                        null=True)
+    description_long = HTMLField(verbose_name='Длинное описание',
+                                 blank=True,
+                                 null=True)
     lng = models.FloatField(verbose_name='Долгота')
     lat = models.FloatField(verbose_name='Широта')
 
