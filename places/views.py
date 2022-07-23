@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
+
 from .models import Place
 
 
@@ -27,7 +28,7 @@ def index(request):
             }
         )
     context = {"content": places_geojson}
-    return render(request, "index.html", context=context)
+    return render(request, "places/index.html", context=context)
 
 
 def get_place_by_id(request, place_id):
