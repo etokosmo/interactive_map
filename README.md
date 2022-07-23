@@ -3,9 +3,9 @@
 ## About
 This project allows you to use an interactive map of Moscow to show interesting places.
 
-You can see this project [here]().
+You can see this project [here](https://etokosmo.pythonanywhere.com/).
 
-You can add location on admin-panel [here]().
+You can add location on admin-panel [here](https://etokosmo.pythonanywhere.com/admin/).
 
 Frontend taken from this [repository](https://github.com/devmanorg/where-to-go-frontend).
 
@@ -19,8 +19,7 @@ Frontend taken from this [repository](https://github.com/devmanorg/where-to-go-f
 
 ## Website example
 
-Real [example site]():
-
+You can see this project [here](https://etokosmo.pythonanywhere.com/).
 
 ![website example]()
 
