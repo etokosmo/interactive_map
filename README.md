@@ -62,7 +62,7 @@ You will get json data with information about this location.
 ## Configurations
 
 * Python version: 3.10
-* Libraries: requirements.txt
+* Libraries: [requirements.txt](https://github.com/etokosmo/interactive_map/blob/main/requirements.txt)
 
 ## Launch
 
@@ -106,7 +106,7 @@ python manage.py runserver
 ## Management commands
 You can load location with command:
 ```bash
-$ python manage.py load_place http://address/file.json
+python manage.py load_place http://address/file.json
 ```
 <details>
   <summary>Example of <a href="https://raw.githubusercontent.com/devmanorg/where-to-go-places/master/places/%D0%90%D0%BD%D1%82%D0%B8%D0%BA%D0%B0%D1%84%D0%B5%20Bizone.json">file</a></summary>
