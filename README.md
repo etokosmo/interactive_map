@@ -92,6 +92,10 @@ pip install -r requirements.txt
 
 `DEBUG` - A boolean that turns on/off debug mode. If your app raises an exception when DEBUG is True, Django will display a detailed traceback, including a lot of metadata about your environment, such as all the currently defined Django settings (from settings.py).
 
+`DATABASE_URL` - URL to db. For more information check [this](https://github.com/jazzband/dj-database-url).
+
+`MEDIA_URL` - URL that handles the media served from MEDIA_ROOT, used for managing stored files. It must end in a slash if set to a non-empty value.
+
 - Create your database with the command:
 ```bash
 python manage.py makemigrations
