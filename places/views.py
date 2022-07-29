@@ -32,15 +32,15 @@ def index(request):
 
 
 def get_place_by_id(request, place_id):
-    current_place = get_object_or_404(Place, id=place_id)
+    place = get_object_or_404(Place, id=place_id)
     response = {
-        "title": current_place.title,
-        "imgs": [image.image.url for image in current_place.images.all()],
-        "description_short": current_place.description_short,
-        "description_long": current_place.description_long,
+        "title": place.title,
+        "imgs": [image.image.url for image in place.images.all()],
+        "description_short": place.description_short,
+        "description_long": place.description_long,
         "coordinates": {
-            "lng": current_place.lng,
-            "lat": current_place.lat
+            "lng": place.lng,
+            "lat": place.lat
         }
     }
     return JsonResponse(response,
