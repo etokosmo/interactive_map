@@ -6,27 +6,27 @@ from django.urls import reverse
 from .models import Place
 
 
+def serialize_places(place):
+    return {
+        "type": "Feature",
+        "geometry": {
+            "type": "Point",
+            "coordinates": [place.lng, place.lat]
+        },
+        "properties": {
+            "title": place.title,
+            "placeId": place.id,
+            "detailsUrl": reverse("place_id", args=[place.id, ])
+        }
+    }
+
+
 def index(request):
     places = Place.objects.all()
     places_on_map = {
         "type": "FeatureCollection",
-        "features": []
+        "features": [serialize_places(place) for place in places]
     }
-    for place in places:
-        places_on_map.get("features").append(
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [place.lng, place.lat]
-                },
-                "properties": {
-                    "title": place.title,
-                    "placeId": place.id,
-                    "detailsUrl": reverse("place_id", args=[place.id, ])
-                }
-            }
-        )
     context = {"places_on_map": places_on_map}
     return render(request, "places/index.html", context=context)
 
