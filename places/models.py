@@ -13,8 +13,7 @@ class Place(models.Model):
     title = models.CharField(verbose_name='Заголовок',
                              max_length=200,
                              unique=True)
-    description_short = models.CharField(verbose_name='Короткое описание',
-                                         max_length=300,
+    description_short = models.TextField(verbose_name='Короткое описание',
                                          blank=True)
     description_long = HTMLField(verbose_name='Длинное описание',
                                  blank=True,
