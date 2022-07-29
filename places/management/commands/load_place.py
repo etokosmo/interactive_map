@@ -1,11 +1,12 @@
+import logging
 import os
 from typing import Tuple
 from urllib.parse import urlsplit, unquote_plus
-import logging
 
 import requests
 from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
+from requests.exceptions import HTTPError
 
 from places.models import Place, Image
 
@@ -61,11 +62,15 @@ class Command(BaseCommand):
         response = requests.get(url)
         response.raise_for_status()
         place_response = response.json()
-
-        place_created = create_object(place_response)
-        if place_created:
-            place_title = place_response.get("title")
-            logger.info(f"Локация '{place_title}' успешно добавлена")
+        try:
+            place_created = create_place(place_response)
+            if place_created:
+                place_title = place_response.get("title")
+                logger.info(f"Локация '{place_title}' успешно добавлена")
+        except KeyError:
+            logger.info(f"KeyError. Ошибка в чтении ключей у place_response")
+        except HTTPError:
+            logger.info(f"HTTPError. Ошибка при скачивании картинки")
 
     def add_arguments(self, parser):
         parser.add_argument(
