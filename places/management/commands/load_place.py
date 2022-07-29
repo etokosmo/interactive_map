@@ -21,7 +21,7 @@ def get_filename_and_file_extension(url: str) -> Tuple[str, str]:
     return filename, file_extension
 
 
-def create_place(place_response: dict) -> Tuple[Place, bool]:
+def create_place(place_response: dict) -> bool:
     place, place_created = Place.objects.get_or_create(
         title=place_response.get("title")
     )
