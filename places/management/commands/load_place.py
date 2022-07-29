@@ -21,35 +21,35 @@ def get_filename_and_file_extension(url: str) -> Tuple[str, str]:
     return filename, file_extension
 
 
-def create_object(response_location: dict) -> Tuple[Place, bool]:
-    location, location_created = Place.objects.get_or_create(
-        title=response_location.get("title"),
-        description_short=response_location.get("description_short"),
-        description_long=response_location.get("description_long"),
-        lng=response_location.get("coordinates").get("lng"),
-        lat=response_location.get("coordinates").get("lat"),
+def create_object(place_response: dict) -> Tuple[Place, bool]:
+    place, place_created = Place.objects.get_or_create(
+        title=place_response.get("title"),
+        description_short=place_response.get("description_short"),
+        description_long=place_response.get("description_long"),
+        lng=place_response.get("coordinates").get("lng"),
+        lat=place_response.get("coordinates").get("lat"),
     )
 
-    location_images = response_location.get("imgs")
-    upload_photo_in_location(location, location_images)
-    return location_created
+    place_images = place_response.get("imgs")
+    upload_photo_in_place(place, place_images)
+    return place_created
 
 
-def upload_photo_in_location(location: Place,
-                             location_images: list[str]) -> None:
-    for location_image_url in location_images:
+def upload_photo_in_place(place: Place,
+                          place_images: list[str]) -> None:
+    for place_image_url in place_images:
         filename, file_extension = get_filename_and_file_extension(
-            location_image_url)
+            place_image_url)
 
-        response = requests.get(location_image_url)
+        response = requests.get(place_image_url)
         response.raise_for_status()
         uploaded_photo = ContentFile(response.content)
 
-        location_image = Image(place=location)
+        place_image = Image(place=place)
 
-        location_image.image.save(f'{filename}{file_extension}',
-                                  uploaded_photo,
-                                  save=True)
+        place_image.image.save(f'{filename}{file_extension}',
+                               uploaded_photo,
+                               save=True)
 
 
 class Command(BaseCommand):
@@ -60,15 +60,15 @@ class Command(BaseCommand):
 
         response = requests.get(url)
         response.raise_for_status()
-        response_location = response.json()
+        place_response = response.json()
 
-        location_created = create_object(response_location)
-        if location_created:
-            location_title = response_location.get("title")
-            logger.info(f"Локация '{location_title}' успешно добавлена")
+        place_created = create_object(place_response)
+        if place_created:
+            place_title = place_response.get("title")
+            logger.info(f"Локация '{place_title}' успешно добавлена")
 
     def add_arguments(self, parser):
         parser.add_argument(
             'url',
-            help='json url with location'
+            help='json url with place'
         )

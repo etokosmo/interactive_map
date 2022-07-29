@@ -8,12 +8,12 @@ from .models import Place
 
 def index(request):
     places = Place.objects.all()
-    places_geojson = {
+    places_on_map = {
         "type": "FeatureCollection",
         "features": []
     }
     for place in places:
-        places_geojson.get("features").append(
+        places_on_map.get("features").append(
             {
                 "type": "Feature",
                 "geometry": {
@@ -27,7 +27,7 @@ def index(request):
                 }
             }
         )
-    context = {"content": places_geojson}
+    context = {"places_on_map": places_on_map}
     return render(request, "places/index.html", context=context)
 
 
