@@ -124,6 +124,7 @@
     });
     map.addControl(sidebar);
 
+    {% if DEBUG %}
     // FIXME should be hidden in production mode
     L.control.custom({
       position: 'bottomleft',
@@ -146,6 +147,7 @@
         },
       }
     }).addTo(map);
+    {% endif %}
 
     function loadJSON(elementId){
       let element = document.getElementById(elementId);

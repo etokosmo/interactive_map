@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
@@ -27,7 +28,7 @@ def index(request):
         "type": "FeatureCollection",
         "features": [serialize_places(place) for place in places]
     }
-    context = {"places_on_map": places_on_map}
+    context = {"places_on_map": places_on_map, "DEBUG": settings.DEBUG}
     return render(request, "places/index.html", context=context)
 
 
