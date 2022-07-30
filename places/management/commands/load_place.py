@@ -1,6 +1,5 @@
 import logging
 import os
-from typing import Tuple
 from urllib.parse import urlsplit, unquote_plus
 
 import requests
@@ -13,13 +12,12 @@ from places.models import Place, Image
 logger = logging.getLogger(__name__)
 
 
-def get_filename_and_file_extension(url: str) -> Tuple[str, str]:
+def get_filename(url: str) -> str:
     """Получаем название файла и расширение файла из ссылки"""
     truncated_url = unquote_plus(
         urlsplit(url, scheme='', allow_fragments=True).path)
-    filename, file_extension = os.path.splitext(truncated_url)
-    filename = filename.split("/")[-1]
-    return filename, file_extension
+    _, filename = os.path.split(truncated_url)
+    return filename
 
 
 def create_place(place_response: dict) -> bool:
@@ -30,6 +28,7 @@ def create_place(place_response: dict) -> bool:
     )
     place.description_short = place_response["description_short"]
     place.description_long = place_response["description_long"]
+    place.save()
 
     place_images = place_response.get("imgs")
     upload_photo_in_place(place, place_images)
@@ -39,7 +38,7 @@ def create_place(place_response: dict) -> bool:
 def upload_photo_in_place(place: Place,
                           place_images: list[str]) -> None:
     for place_image_url in place_images:
-        filename, file_extension = get_filename_and_file_extension(
+        filename = get_filename(
             place_image_url)
 
         response = requests.get(place_image_url)
@@ -48,7 +47,7 @@ def upload_photo_in_place(place: Place,
 
         place_image = Image(place=place)
 
-        place_image.image.save(f'{filename}{file_extension}',
+        place_image.image.save(filename,
                                uploaded_photo,
                                save=True)
 
