@@ -43,5 +43,4 @@ def get_place_by_id(request, place_id):
             "lat": place.lat
         }
     }
-    return JsonResponse(response,
-                        json_dumps_params={'ensure_ascii': False, 'indent': 2})
+    return JsonResponse(response, json_dumps_params={'ensure_ascii': False})
