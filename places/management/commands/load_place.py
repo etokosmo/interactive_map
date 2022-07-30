@@ -24,12 +24,12 @@ def get_filename_and_file_extension(url: str) -> Tuple[str, str]:
 
 def create_place(place_response: dict) -> bool:
     place, place_created = Place.objects.get_or_create(
-        title=place_response.get("title")
+        title=place_response.get("title"),
+        lng=place_response["coordinates"]["lng"],
+        lat=place_response["coordinates"]["lat"]
     )
     place.description_short = place_response["description_short"]
     place.description_long = place_response["description_long"]
-    place.lat = place_response["coordinates"]["lng"]
-    place.lat = place_response["coordinates"]["lat"]
 
     place_images = place_response.get("imgs")
     upload_photo_in_place(place, place_images)
