@@ -42,13 +42,8 @@ def upload_photo_in_place(place: Place,
 
         response = requests.get(place_image_url)
         response.raise_for_status()
-        uploaded_photo = ContentFile(response.content)
-
-        place_image = Image(place=place)
-
-        place_image.image.save(filename,
-                               uploaded_photo,
-                               save=True)
+        uploaded_photo = ContentFile(response.content, name=filename)
+        Image.objects.create(place=place, image=uploaded_photo)
 
 
 class Command(BaseCommand):
