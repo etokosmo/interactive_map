@@ -24,11 +24,10 @@ def create_place(place_response: dict) -> bool:
     place, place_created = Place.objects.get_or_create(
         title=place_response.get("title"),
         lng=place_response["coordinates"]["lng"],
-        lat=place_response["coordinates"]["lat"]
+        lat=place_response["coordinates"]["lat"],
+        defaults={'description_short': place_response["description_short"],
+                  'description_long': place_response["description_long"]}
     )
-    place.description_short = place_response["description_short"]
-    place.description_long = place_response["description_long"]
-    place.save()
 
     place_images = place_response.get("imgs")
     upload_photo_in_place(place, place_images)
