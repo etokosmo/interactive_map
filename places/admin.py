@@ -13,7 +13,8 @@ class ImageInline(SortableInlineAdminMixin, admin.TabularInline):
 
     def get_preview(self, image):
         return format_html(
-            f"<img src={image.image.url} style='max-height: 200px;'>",
+            "<img src={} style='max-height: 200px;'>",
+            image.image.url
         )
 
 
